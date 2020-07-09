@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="Tetris_WPF.Board"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Tetris_WPF"
+             mc:Ignorable="d" Height="500" Width="550"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid x:Name="BoardGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50" x:Name="col1"></ColumnDefinition>
+            <ColumnDefinition Width="50" x:Name="col2"></ColumnDefinition>
+            <ColumnDefinition Width="50" x:Name="col3"></ColumnDefinition>
+            <ColumnDefinition Width="50" x:Name="col4"></ColumnDefinition>
+            <ColumnDefinition Width="50" x:Name="col5"></ColumnDefinition>
+            <ColumnDefinition Width="50" x:Name="col6"></ColumnDefinition>
+            <ColumnDefinition Width="50" x:Name="col7"></ColumnDefinition>
+            <ColumnDefinition Width="50" x:Name="col8"></ColumnDefinition>
+            <ColumnDefinition Width="50" x:Name="col9"></ColumnDefinition>
+            <ColumnDefinition Width="50" x:Name="col10"></ColumnDefinition>
+            <ColumnDefinition Width="50" x:Name="col11"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" x:Name="row1"></RowDefinition>
+            <RowDefinition Height="50" x:Name="row2"></RowDefinition>
+            <RowDefinition Height="50" x:Name="row3"></RowDefinition>
+            <RowDefinition Height="50" x:Name="row4"></RowDefinition>
+            <RowDefinition Height="50" x:Name="row5"></RowDefinition>
+            <RowDefinition Height="50" x:Name="row6"></RowDefinition>
+            <RowDefinition Height="50" x:Name="row7"></RowDefinition>
+            <RowDefinition Height="50" x:Name="row8"></RowDefinition>
+            <RowDefinition Height="50" x:Name="row9"></RowDefinition>
+            <RowDefinition Height="50" x:Name="row10"></RowDefinition>
+            <RowDefinition Height="50" x:Name="row11"></RowDefinition>
+        </Grid.RowDefinitions>
+
+    </Grid>
+</UserControl>
