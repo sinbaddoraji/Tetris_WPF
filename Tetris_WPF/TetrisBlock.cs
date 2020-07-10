@@ -21,7 +21,7 @@ namespace Tetris_WPF
         /// <summary>
         /// X and Y values of current tetris Block
         /// </summary>
-        public int x = 5, y = 1;
+        public int x = 5, y = 0;
         /// <summary>
         /// Enum holding the names of different block types
         /// </summary>
@@ -340,7 +340,7 @@ namespace Tetris_WPF
             if (x == 0) return;
             x--;
 
-            var a = GameBoard.landedXY;
+            var a = GameBoard.DroppedBrickCordinates.ToList();
             var b = GameBoard.GetBoardGridPoints(this).ToList();
             var c = new List<int[]>();
 
@@ -366,7 +366,7 @@ namespace Tetris_WPF
             if (width + x >= 10) return;
             x++;
 
-            var a = GameBoard.landedXY;
+            var a = GameBoard.DroppedBrickCordinates.ToList();
             var b = GameBoard.GetBoardGridPoints(this).ToList();
             var c = new List<int[]>();
 
@@ -392,7 +392,7 @@ namespace Tetris_WPF
             if (height + y >= 9) return true;
             y++;
 
-            var a = GameBoard.landedXY;
+            var a = GameBoard.DroppedBrickCordinates.ToList();
             var b = GameBoard.GetBoardGridPoints(this).ToList();
             var c = new List<int[]>();
 

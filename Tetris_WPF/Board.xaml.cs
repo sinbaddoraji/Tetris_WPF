@@ -23,23 +23,17 @@ namespace Tetris_WPF
         /// <summary>
         /// x and y values of bricks that have dropped
         /// </summary>
-        public List<int[]> landedXY
+        public IEnumerable<int[]> DroppedBrickCordinates
         {
             get
             {
-                List<int[]> output = new List<int[]>();
                 for (int y = 10; y >= 0; y--)
                 {
                     for (int x = 10; x >= 0; x--)
                     {
-                        if (GridArray[y][x].Dropped)
-
-                        {
-                            output.Add(new[] { y, x });
-                        }
+                        if (GridArray[y][x].Dropped) yield return new[] { y, x };
                     }
                 }
-                return output;
             }
         }
         /// <summary>
@@ -73,8 +67,7 @@ namespace Tetris_WPF
             focusTimer.Tick += FocusTimer_Tick;
             focusTimer.Start();
 
-            if(_dropRate > 500)
-            _dropRate -= 10;
+            //if(_dropRate > 800)_dropRate -= 10;
             _dropTimer = new System.Windows.Forms.Timer { Interval = _dropRate };
             _dropTimer.Tick += DropTimer_Tick;
             _dropTimer.Start();
@@ -105,7 +98,7 @@ namespace Tetris_WPF
         /// </summary>
         public void RedrawOldShapes()
         {
-            foreach (var brick in landedXY)
+            foreach (var brick in DroppedBrickCordinates)
             {
                 GridArray[brick[0]][brick[1]].Background = GridArray[brick[0]][brick[1]]._droppedColour;
             }
@@ -141,15 +134,23 @@ namespace Tetris_WPF
                 {
 
                 }
-                
 
 
-                if (isOnGround)
+                try
                 {
-                    GridArray[y][x].Dropped = true;
-                    GridArray[y][x]._droppedColour = p.BrickColour;
-                    landedXY.Add(new[] { y, x });
+                    if (isOnGround)
+                    {
+                        GridArray[y][x].Dropped = true;
+                        GridArray[y][x]._droppedColour = p.BrickColour;
+                    }
                 }
+                catch (Exception)
+                {
+                    if (x >= 11) p.x = 10;
+                    if (y >= 11) p.y = 10;
+
+                }
+               
             }
         }
         /// <summary>
@@ -165,40 +166,49 @@ namespace Tetris_WPF
                 DrawShape(_currentBlock, true);
                 DropBrick();
 
-                foreach (var y in WinningLines())
-                {
-                    for (int x = 10; x >= 0; x--)
-                    {
-                        GridArray[y][x].Dropped = false;
-                        GridArray[y][x]._droppedColour = Brushes.Black;
-                        foreach (var item in landedXY.Where(b => b.SequenceEqual(new int[] { y, x })))
-                        {
-                            landedXY.Remove(item);
-                        }
-                    }
-                    foreach (var item in landedXY)
-                    {
-                        if (item[0] < y)
-                        {
-                            GridArray[item[0]][item[1]].Dropped = false;
-                            GridArray[item[0] + 1][item[1]].Dropped = true;
-
-                            GridArray[item[0] + 1][item[1]]._droppedColour = GridArray[item[0]][item[1]]._droppedColour;
-                            GridArray[item[0]][item[1]]._droppedColour = Brushes.Black;
-                            item[0]++;
-                        }
-                    }
-                }
-
-
                 //Get rid of old drop timer object
                 _dropTimer.Stop();
                 _dropTimer = null;
+
             }
             else
             {
                 ClearGrid();
                 DrawShape(_currentBlock, false);
+            }
+
+            ClearWinningLines();
+        }
+
+        private void ClearWinningLines()
+        {
+            var winningLines = WinningLines();
+            foreach (var y in winningLines)
+            {
+                for (int x = 10; x >= 0; x--)
+                {
+                    GridArray[y][x].Dropped = false;
+                    GridArray[y][x]._droppedColour = Brushes.Black;
+                    
+                }
+                foreach (var item in DroppedBrickCordinates)
+                {
+                    if (item[0] < y)
+                    {
+                        GridArray[item[0]][item[1]].Dropped = false;
+                        GridArray[item[0] + 1][item[1]].Dropped = true;
+
+                        GridArray[item[0] + 1][item[1]]._droppedColour = GridArray[item[0]][item[1]]._droppedColour;
+                        GridArray[item[0]][item[1]]._droppedColour = Brushes.Black;
+                        item[0]++;
+                    }
+                }
+            }
+
+            if(winningLines.Any())
+            {
+                ClearGrid();
+                DrawShape(_currentBlock, true);
             }
         }
 
